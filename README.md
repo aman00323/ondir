@@ -14,7 +14,7 @@ echo "source ~/tools/ondir/scripts/ondir.sh >> ~/.zshrc"
 
 ## Configuration
 
-On you directory, add a `.ondir` file :
+In you directory, add a `.ondir` file :
 
 ```
 enter:
