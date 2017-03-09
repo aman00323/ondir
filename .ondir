@@ -1,0 +1,9 @@
+enter:
+  - export GOPATH=$PWD
+  - export GOBIN=$GOPATH/bin
+  - echo "Welcome in $PWD"
+
+leave:
+  - echo "Have a nice day !"
+  - unset GOPATH
+  - unset GOBIN
