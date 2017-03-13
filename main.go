@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -13,6 +14,8 @@ type Config struct {
 	Enter []string
 	Leave []string
 }
+
+const ondir = ".ondir"
 
 func LoadConfig(path string) Config {
 	var config Config
@@ -31,17 +34,34 @@ func usage() {
 	fmt.Println("Usage...")
 }
 
-func ChangeDir(from string, to string) {
-	from_config := filepath.Join(from, ".ondir")
-	if _, err := os.Stat(from_config); err == nil {
-		config := LoadConfig(from_config)
-		fmt.Println(strings.Join(config.Leave, "\n"))
+func FindOndirConfig(path string) (string, error) {
+	config := filepath.Join(path, ondir)
+	if _, err := os.Stat(config); err == nil {
+		return config, nil
+	} else if path == "/" {
+		return "", errors.New("not found")
 	}
+	if path, err := filepath.Abs(filepath.Join(path, "..")); err == nil {
+		return FindOndirConfig(path)
+	} else {
+		return "", errors.New("not found")
+	}
+}
 
-	to_config := filepath.Join(to, ".ondir")
-	if _, err := os.Stat(to_config); err == nil {
-		config := LoadConfig(to_config)
-		fmt.Println(strings.Join(config.Enter, "\n"))
+func ChangeDir(from string, to string) {
+	leave, leave_err := FindOndirConfig(from)
+	enter, enter_err := FindOndirConfig(to)
+	if leave != enter {
+		if leave_err == nil {
+			fmt.Println("# LEAVE :", leave, "\n")
+			config := LoadConfig(leave)
+			fmt.Println(strings.Join(config.Leave, "\n"))
+		}
+		if enter_err == nil {
+			fmt.Println("# ENTER :", enter, "\n")
+			config := LoadConfig(enter)
+			fmt.Println(strings.Join(config.Enter, "\n"))
+		}
 	}
 }
 
