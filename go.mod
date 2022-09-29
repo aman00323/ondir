@@ -1,4 +1,4 @@
-module github.com/glejeune/ondir
+module github.com/aman00323/ondir
 
 go 1.17
 
