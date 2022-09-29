@@ -1,3 +1,4 @@
 bin/ondir
 pkg/
 src/
+vendor/

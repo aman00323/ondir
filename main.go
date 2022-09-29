@@ -3,11 +3,12 @@ package main
 import (
 	"errors"
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"gopkg.in/yaml.v2"
 )
 
 type Config struct {
@@ -53,12 +54,12 @@ func ChangeDir(from string, to string) {
 	enter, enter_err := FindOndirConfig(to)
 	if leave != enter {
 		if leave_err == nil {
-			fmt.Println("# LEAVE :", leave, "\n")
+			fmt.Println("# LEAVE :", leave)
 			config := LoadConfig(leave)
 			fmt.Println(strings.Join(config.Leave, "\n"))
 		}
 		if enter_err == nil {
-			fmt.Println("# ENTER :", enter, "\n")
+			fmt.Println("# ENTER :", enter)
 			config := LoadConfig(enter)
 			fmt.Println(strings.Join(config.Enter, "\n"))
 		}

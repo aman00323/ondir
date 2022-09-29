@@ -1,0 +1,16 @@
+name: Gosec
+on:
+  push:
+    paths:
+      - "**.go"
+      - "go.*"
+      - ".github/workflows/**"
+
+jobs:
+  gosec:
+    runs-on: ubuntu-latest
+    env:
+      GO111MODULE: on
+    steps:
+      - uses: actions/checkout@v3
+      - { uses: securego/gosec@master, with: { args: -tests ./... } }
