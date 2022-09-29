@@ -20,7 +20,7 @@ const ondir = ".ondir"
 
 func LoadConfig(path string) Config {
 	var config Config
-	source, err := ioutil.ReadFile(path)
+	source, err := ioutil.ReadFile(filepath.Join(filepath.Clean(path)))
 	if err != nil {
 		panic(err)
 	}
